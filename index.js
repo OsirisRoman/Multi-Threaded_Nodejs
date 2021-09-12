@@ -5,6 +5,8 @@ if(cluster.isMaster) {
     // Cause index.js to be executed *again* but
     // in child mode
     cluster.fork();
+    cluster.fork();
+    cluster.fork();
 } else {
     // I'm a child, Im going to act like a server
     // and do nothing else
@@ -19,7 +21,11 @@ if(cluster.isMaster) {
     app.get("/", (req, res) => {
         doWork(5000);
         res.send("Hi There! Ready for Nodejs in Multi-Thread Mode!?");
-    })
+    });
+
+    app.get("/fast-response", (req, res) => {
+        res.send("This is a fastest response because it is being managed by a unblocked thread of a multi-threaded Nodejs Server");
+    });
     
     const port = 3000;
     app.listen(port, () => {
